@@ -1,74 +1,60 @@
 class TacosController < ApplicationController
-  before_action :set_taco, only: [:show, :edit, :update, :destroy]
 
-  # GET /tacos
-  # GET /tacos.json
   def index
     @tacos = Taco.all
   end
 
-  # GET /tacos/1
-  # GET /tacos/1.json
   def show
+    @taco = Taco.find(params[:id])
   end
 
-  # GET /tacos/new
   def new
-    @taco = Taco.new
+    @taco = Taco.new(delicious: true)
   end
 
-  # GET /tacos/1/edit
-  def edit
-  end
-
-  # POST /tacos
-  # POST /tacos.json
   def create
+    # { "utf8"=>"✓",
+    #   "authenticity_token"=>"+iVXXTRIqKZC3jgYEmGFWd4et4PiEnn8P8MVIpBedoE=",
+    #   "taco"=>{
+    #     "name"=>"crispy crispies",
+    #     "ingredients"=>"",
+    #     "admin"=>true,
+    #     "delicious"=>"1"
+    #   },
+    #   "commit"=>"Create Taco"
+    # }
+
     @taco = Taco.new(taco_params)
-
-    respond_to do |format|
-      if @taco.save
-        format.html { redirect_to @taco, notice: 'Taco was successfully created.' }
-        format.json { render :show, status: :created, location: @taco }
-      else
-        format.html { render :new }
-        format.json { render json: @taco.errors, status: :unprocessable_entity }
-      end
+    if @taco.save
+      redirect_to tacos_path, notice: "Taco saved!"
+    else
+      # taco is invalid
+      render :new
     end
+
   end
 
-  # PATCH/PUT /tacos/1
-  # PATCH/PUT /tacos/1.json
+  def edit
+    @taco = Taco.find(params[:id])
+  end
+
   def update
-    respond_to do |format|
-      if @taco.update(taco_params)
-        format.html { redirect_to @taco, notice: 'Taco was successfully updated.' }
-        format.json { render :show, status: :ok, location: @taco }
-      else
-        format.html { render :edit }
-        format.json { render json: @taco.errors, status: :unprocessable_entity }
-      end
+    @taco = Taco.find(params[:id])
+    if @taco.update(taco_params)
+      redirect_to @taco, notice: "Taco saved!"
+    else
+      # taco is invalid
+      render :edit
     end
   end
 
-  # DELETE /tacos/1
-  # DELETE /tacos/1.json
   def destroy
+    @taco = Taco.find(params[:id])
     @taco.destroy
-    respond_to do |format|
-      format.html { redirect_to tacos_url, notice: 'Taco was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to tacos_path, notice: "Taco BAM DESTROYED BAM"
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_taco
-      @taco = Taco.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def taco_params
-      params.require(:taco).permit(:name, :ingredients, :photo_url, :delicious)
-    end
+  def taco_params
+    params.require(:taco).permit(:name, :ingredients, :photo_url, :delicious)
+  end
 end
