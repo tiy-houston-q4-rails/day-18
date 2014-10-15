@@ -17,3 +17,9 @@ rails generate scaffold taco name ingredients:text photo_url delicious:boolean
   table)
 * Use Bootstrap to style the table
 * Have db/seeds so I can see your seeds when they seed
+
+### Notes
+
+* http://guides.rubyonrails.org/migrations.html
+* http://guides.rubyonrails.org/active_record_validations.html
+* https://github.com/stympy/faker
